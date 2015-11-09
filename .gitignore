@@ -11,4 +11,4 @@ build/Release
 node_modules
 *.module-cache
 src
-exercises
+# exercises commented out to distribute answers between different devices. 
