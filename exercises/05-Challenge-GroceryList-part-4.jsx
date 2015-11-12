@@ -51,15 +51,22 @@ class GroceryList extends React.Component {
     };
 
     this.addGroceryItem = this.addGroceryItem.bind(this);
-    this.clearList = this.clearList.bind(this);
     this.inputChanged = this.inputChanged.bind(this);
+    this.clearList = this.clearList.bind(this);
+      this.isDisabled = this.isDisabled.bind(this);
   }
 
+    isDisabled() {
+        console.log("Length of new grocery Name" + this.state.newGroceryName.length);
+        return this.state.newGroceryName.length < 0;
+    }
   inputChanged(event) {
+    console.log(event.target.value);
     this.setState({ newGroceryName: event.target.value });
   }
 
   addGroceryItem() {
+    /* console.log(this.state.newGroceryName); */
     if(this.state.newGroceryName) {
       let newGroceryItem = {
         name: this.state.newGroceryName,
@@ -86,8 +93,6 @@ class GroceryList extends React.Component {
 
   render() {
     let groceriesComponents = [],
-        newProductInput,
-        newProductAddButton,
         clearListButton;
     for(var index = 0; index < this.state.groceries.length; index++) {
       groceriesComponents.push(
@@ -98,8 +103,7 @@ class GroceryList extends React.Component {
       );
     }
 
-    newProductInput = <input className='new-item' type="text" onChange={this.inputChanged}/>;
-    newProductAddButton = <button className='add-product' onClick={this.addGroceryItem}>Add new Product</button>;
+
     clearListButton = <button className='clear-list' onClick={this.clearList}>Clear the List</button>;
 
     return (
@@ -107,13 +111,31 @@ class GroceryList extends React.Component {
         <ul>
           {groceriesComponents}
         </ul>
-        {newProductInput}
-        {newProductAddButton}
+        <ButtonAndInput addGroceryItem={this.addGroceryItem} inputChanged={this.inputChanged} disabled={this.isDisabled}/>
         {clearListButton}
       </div>
     );
   }
 }
+
+
+var ButtonAndInput = React.createClass ({
+
+  render() {
+    let newProductInput,
+        newProductAddButton;
+
+    newProductInput = <input className='new-item' type="text" onChange={this.props.inputChanged}/>;
+    newProductAddButton = <button className='add-product' onClick={this.props.addGroceryItem}>Add new Product</button>;
+
+    return (
+        <div>
+            <input className='new-item' type="text" onChange={this.props.inputChanged}/>
+            <button className='add-product' disabled={this.props.disabled} onClick={this.props.addGroceryItem}>Add new Product</button>
+        </div>
+    );
+  }
+});
 
 class GroceryListItem extends React.Component {
   constructor(props) {
