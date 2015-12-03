@@ -47,22 +47,30 @@ class GroceryList extends React.Component {
           completed: false
         }
       ],
-      newGroceryName: ""
+      newGroceryName: "",
+      disabled: true
     };
 
     this.addGroceryItem = this.addGroceryItem.bind(this);
     this.inputChanged = this.inputChanged.bind(this);
     this.clearList = this.clearList.bind(this);
-      this.isDisabled = this.isDisabled.bind(this);
+    this.isDisabled = this.isDisabled.bind(this);
   }
 
-    isDisabled() {
-        console.log("Length of new grocery Name" + this.state.newGroceryName.length);
-        return this.state.newGroceryName.length < 0;
-    }
+  isDisabled() {
+      console.log("Length of new grocery Name" + this.state.newGroceryName.length);
+      return this.state.newGroceryName.length < 0;
+  }
+
   inputChanged(event) {
-    console.log(event.target.value);
+    console.log(event.target.value + " with length of " + event.target.value.length);
+    console.log("Disabled?" + this.state.disabled);
     this.setState({ newGroceryName: event.target.value });
+    if(event.target.value.length > 0) {
+      this.setState({disabled: false});
+    } else {
+      this.setState({disabled: true})
+    }
   }
 
   addGroceryItem() {
@@ -111,7 +119,7 @@ class GroceryList extends React.Component {
         <ul>
           {groceriesComponents}
         </ul>
-        <ButtonAndInput addGroceryItem={this.addGroceryItem} inputChanged={this.inputChanged} disabled={this.isDisabled}/>
+        <ButtonAndInput addGroceryItem={this.addGroceryItem} inputChanged={this.inputChanged} disabled={this.state.disabled}/>
         {clearListButton}
       </div>
     );
